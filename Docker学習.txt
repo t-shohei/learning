@@ -1,0 +1,107 @@
+Dockerとは
+    PCの中にPCを作るみたいな感じのためのソフト
+    アプリのコンテナ化を行うためのもの
+
+Dockerファイル
+    イメージを作るために必要な手順を記載したもの、インストールするアプリ、行うコマンドなどを記載
+    ＊ 料理のレシピ
+
+Dockerイメージ
+    Docker コンテナを作成するための手順が記載された読み取り専用のテンプレート
+    python,MySqlなどのインストール方法など
+    アプリのソースコードや依存関係のパッケージが入っている。
+    ビルドから実行までに必要な命令が記載されている
+    コンテナ作成時に指示を出すもの
+    docker pull、docker pushなどはここで使用する
+    ＊ コンテナのクラスみたいなもの
+
+Dockerコンテナ
+    イメージから作り出された実行可能な仮想空間（インスタンス）のようなもの
+    Docker API または CLI を使用して、コンテナを作成、開始、停止、移動、または削除できる
+    コンテナを 1 つ以上のネットワークに接続したり、ストレージを接続したり、現在の状態に基づいて新しいイメージを作成したりすることもできる
+    コンテナが削除されると、永続ストレージに保存されていない状態の変更はすべて消える
+
+コンテナイメージ
+    ファイル、構成、依存関係など実行に必要なものをパッケージ化したもの
+
+
+Dockerのアーキテクチャ
+    参照：https://docs.docker.com/get-started/docker-overview/
+    クライアントサーバーアーキテクチャを使用する
+    DockerクライアントはDockerデーモンと通信することで、コンテナの構築、配布、実行が行える
+    
+    Dockerクライアント
+        dockerクライアント（docker）でコマンドを入力し、デーモンにコマンドを送信し、実行されるためのインターフェイスのようなもの
+        dockerコマンドは、DockerAPIを使用する
+        クライアントは複数のデーモンと通信ができる
+
+    Dockerデーモン
+        DockerAPIリクエスト（入力されたコマンド）を受け鳥、Dockerオブジェクトを管理する
+        デーモンは、ほかのデーモンと通信を行うことでDockerサービスを管理することもできる    
+
+    Dockerデスクトップ
+        Windowsなどの環境に簡単にインストールできるアプリ
+        Docker デーモン、Dockerクライアント、Docker Compose、Docker Content Trust、Kubernetes、Credential Helperが含まれている
+
+    Dockerレジストリ
+        Dockerイメージの保存される場所
+        Docker Hubなどのことを指し、独自のプライベートレジストリを実行することもできる。
+        デフォルトでは、DockerHubを見に行く
+    
+    Dockerオブジェクト
+        Dockerを使用すると、イメージ、コンテナ、ネットワーク、ボリューム、プラグインなどのオブジェクトを作成して、使用する。
+    
+Dockerの基本コマンド
+    docker image build [オプション] Dockerfileのパス
+        Dockerファイルから、Dockerイメージを作成する
+        ＊ docker image build -t imagename/nginx：latest .
+            -t : イメージ名、タグ名を指定する
+
+    docker run [オプション] imagename
+        Dockerイメージを使いDockerコンテナを起動（作成）する
+        ＊ docker run --name containername -d -p 8080:80 imagename
+            -p : コンテナのポート番号と、サーバーのポート番号を紐づける
+            -d : コンテナをバックグラウンドで実行する
+            --name : コンテナ名を指定する
+    
+    docker start [オプション] containername
+        作成したコンテナを起動する
+        ＊ docker start containername
+
+    docker stop [オプション] containername
+        コンテナを停止する
+        ＊ docker stop containername
+    
+    docker rm [オプション] containername
+        停止中のコンテナを削除する
+        ＊ docker rm -f containername
+            -f : コンテナが起動中でも強制削除
+
+    docker restart [オプション] containername
+        コンテナを再起動する
+        ＊ docker restart containername
+
+    docker exec [オプション] containername コマンド
+        起動中のコンテナ内でコマンドを実行する
+        ＊ docker exec -it containername bash
+            -it : コンテナ側のコマンドの入出力を手元のターミナルに移行する
+
+dockerComposeとは
+    マルチコンテナ アプリケーションを定義および実行するためのツー
+    多数のコンテナとその構成を１つのYAMLファイルで管理する(compose.yaml)
+
+dockerComposeの基本コマンド：https://docs.docker.com/reference/cli/docker/compose/
+compose.yamlのあるディレクトリで行う
+    docker compose up
+        ファイルに定義されているサービスを開始する
+
+    docker compose down
+        実行中のサービスを停止して、削除する
+    
+    docker compose logs
+        実行中コンテナの出力を監視して、デバックするとき
+    
+    docker compose ps
+        すべてのサービスとステータスを一覧表示する
+    
+ボリュームとは
